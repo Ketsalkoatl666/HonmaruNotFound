@@ -1,0 +1,246 @@
+、<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>刀剑乱舞 - 本丸规则怪谈</title>
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #d0d0d0;
+            --accent-color: #8b0000;
+            --button-bg: #2a2a2a;
+            --button-hover: #3a3a3a;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        /* 首页样式 */
+        #home-screen {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            animation: fadeIn 2s ease-in-out;
+        }
+        .game-title {
+            font-size: 2.5em;
+            color: #fff;
+            margin-bottom: 10px;
+            letter-spacing: 5px;
+        }
+        .game-subtitle {
+            font-size: 1.2em;
+            color: var(--accent-color);
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+        }
+        .intro-text {
+            text-align: left;
+            background-color: #1a1a1a;
+            padding: 30px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-color);
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            font-size: 1.05em;
+        }
+        .warning-text {
+            color: #ff4d4d;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .start-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 2px;
+        }
+        .start-btn:hover {
+            background-color: #a00000;
+            box-shadow: 0 0 15px rgba(139, 0, 0, 0.6);
+        }
+
+        /* 游戏界面样式 */
+        #game-container {
+            display: none; /* 初始隐藏 */
+            max-width: 800px;
+            width: 100%;
+            background-color: #1e1e1e;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        .story-text {
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            white-space: pre-wrap;
+        }
+        .choices-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .choice-btn {
+            background-color: var(--button-bg);
+            color: var(--text-color);
+            border: 1px solid #444;
+            padding: 15px 20px;
+            font-size: 1em;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        .choice-btn:hover {
+            background-color: var(--button-hover);
+            border-color: #666;
+        }
+
+        /* 规则面板样式 */
+        #rule-btn {
+            display: none; /* 初始隐藏 */
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #333;
+            border: 1px solid var(--accent-color);
+            color: #ff4d4d;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            z-index: 100;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        #rule-btn:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        #rule-panel {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 700px;
+            height: 80vh;
+            background-color: #111;
+            border: 2px solid var(--accent-color);
+            padding: 30px;
+            overflow-y: auto;
+            z-index: 101;
+            box-shadow: 0 0 30px rgba(0,0,0,0.9);
+        }
+        #rule-panel h3 {
+            color: #ff4d4d;
+            border-bottom: 1px solid #444;
+            padding-bottom: 10px;
+        }
+        .close-btn {
+            float: right;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8em;
+            cursor: pointer;
+            line-height: 1;
+        }
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 100;
+        }
+        .achievement {
+            color: #ff4d4d;
+            font-weight: bold;
+            font-size: 1.2em;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="home-screen">
+        <h1 class="game-title">刀剑乱舞</h1>
+        <div class="game-subtitle">本 丸 规 则 怪 谈</div>
+        
+        <div class="intro-text">
+            <p>一个人类审在就任前夕离奇失踪，最后停留的坐标是在一个根本就不存在的本丸。</p>
+            <p>为避免引起重大事故，时之政府秘密召集十五位能力出众的审神者进入本丸深度调查，不料众人在进入本丸之后彻底分散，有的独立作战，有的二三组队，陪伴在他们身旁的只有一本有《本丸规则怪谈》【共计十七条规则】和《本丸日常规定守则》（共计十条规定）。</p>
+            <p>众人需要在七日之内从这二十七条规则里选出其中的七条真规则，每晚仅可检验三条规则，假如其中有真规则，当晚即可平安度过；如果三条皆为假规则，则立即失去三分之一的生命。</p>
+            <p class="warning-text">玩家需要在七日之内脱离该本丸，否则将成为本丸的一部分。</p>
+        </div>
+
+        <button class="start-btn" onclick="startGame()">开始探索</button>
+    </div>
+
+    <button id="rule-btn" onclick="toggleRules()">查看随身手册</button>
+
+    <div id="overlay" onclick="toggleRules()"></div>
+    <div id="rule-panel">
+        <button class="close-btn" onclick="toggleRules()">×</button>
+        
+        <h3>本丸日常规定守则：</h3>
+        <p>1.本丸没有狐之助，如果您在本丸遇到了它，请尽快回到天守阁，如果窗户上一直出现它的身影，请不断默念“我才是本丸的审神者”，直到身影消失再停止默念，并且在第二天日出之前禁止离开天守阁。<br>
+        2.本丸所有的刀都只存在初号机，如果您当天碰到了一振刀的二号机乃至三号机，那么请您当天就不要再回到天守阁，也不要去所在刀派的部屋过夜，否则您将会被祂盯上，这将会加速您在本丸迷失的速度。<br>
+        3.在日落之前您可以去所有房间查询线索，但是请不要在刚来到本丸的三天之内去查看千叶樱状态，否则当晚将丢失三分之一的生命。<br>
+        4.本丸提供一日三餐，您也可以前往厨房自己做饭吃，但是务必牢记请不要浪费任何一粒食物，就算做的再难吃也必须吃完，如果食材掉到了地上，请及时清理，禁止丢进垃圾捅内。<br>
+        5.本丸的宵禁时间是晚上十点，请在晚上九点半之前回到天守阁并且不再外出，即使听到了任何声响也不可以开门。<br>
+        6.如果您实在不想写公文，也可以写下一些笔记，方便后面的人来接手这个本丸。<br>
+        7.如果在宵禁时间前，有刀男提出主动守夜，请先查看他的眼睛是否为白瞳，如果为正常瞳色，请委婉拒绝他；如果为白瞳，请在宵禁时间开始之前把他赶去别的刀派的部屋，否则当晚您将被取消检验规则的机会。<br>
+        8.本丸当日的近侍是由您认定的，但是切记一天只能指定一位刀男为近侍，如果当日他在相处过程为白瞳，请不要再让他靠近你，避免您被污染。<br>
+        9.如果您在呆在本丸期间时常感到晕眩、恶心、想吐，那么恭喜您已被本丸认可，在您的生命耗尽那刻就将成为本丸的一部分。<br>
+        10.最后请您牢记“您是外来人员，如果您真的想成为本丸的审神者，自愿想成为本丸的一部分的话，就请您验证完所有真规则再离开吧！”</p>
+
+        <h3>本丸规则怪谈：</h3>
+        <p>1.本丸只有狐之助是真是存在的，如果您的身边出现刀剑男士，那一定是祂们伪装，请绝对相信狐之助的话，关键时候，它将会保住您的性命。<br>
+        2.狐之助一般不出现在本丸，如果您在探索过程中发现了它，那么请立即远离天守阁，前往本丸的干叶樱底下过夜，且务必在宵禁时间后到达，否则您将迷在这个本丸彻底迷失。<br>
+        3.本丸从始至终只有一个近侍，且一直为白瞳，如果您发现他的瞳色有变化，请迅速远离他，且把他困在天守阁，您可前往其他刀派的部屋过夜，直到第二天天亮为止。<br>
+        4.规则三是假的。<br>
+        5.请确保您从一开始是独自作战或者是与伙伴共同作战，务必牢记外来人员的人数，避免回去的时候多一个或者少一个人。<br>
+        6.本丸保证审神者的一日三餐，您可以每日前往大广间用餐，即使浪费粮食也不会受到任何威胁，但是严禁进入厨房，您不会想知道食物的原材料是些什么的。<br>
+        7.您来到本丸之后的三日内严禁前往查看千叶樱状态，否则您将会成为祂的一部分。<br>
+        8.您可以在白日里进入所有的房间查看线索，如果在检查过程中发现部屋里有人，请不要发出任何声响，立即离开且务必回到天守阁，此后直到第二天太阳升起之后都不可外出。<br>
+        9.本丸审神者的宵禁时间是晚上九点半，但是刀剑男士的宵禁时间是十点，如果您在这半个小时内无法回到天守阁，那么很可惜，您将失去三分之一的生命，且会出现晕眩、恶心、想吐的症状。<br>
+        10.如果您出现晕眩、恶心、想吐的症状，可前往修复室【手入】，这可以大量缓解您的疼痛。<br>
+        11.在【手入】过程中，请一直默念“我只是外来人员，并非本丸原住民”，直到【手入】过程结束为止，否则您将会被祂们盯上，成为本丸的一员。<br>
+        12.如果您时常感觉背后发凉，请不要叵头，不然您将看到恐怖的东西。<br>
+        13.请务必保证您能安全度过前三天，否则从第四天起您将会出现晕眩、恶心、想吐的症状。<br>
+        14.本丸刀账已遗失，所以无法判定祂们会伪装成多少人出现在您身边，请您务必重视这个事情。<br>
+        15.如果看到书桌上出现公文，请仔细查看，说不定里面有能帮助您离开的方法<br>
+        16.以上的规则都是假的，无需遵守。<br>
+        17.请您在来到本丸的第一天就去查看干叶樱的状态，并与祂签下契约，在此恭贺您成为本丸的新审神者。</p>
+    </div>
+
+    <div id="game-container">
+        <div id="story-text" class="story-text"></div>
+        <div id="choices-container" class="choices-container"></div>
+    </div>
+
+    <script src="end1.js"></script>
+</body>
+</html>
