@@ -1,0 +1,106 @@
+/* style.css */
+:root {
+    --bg-color: #0a0a0a;
+    --text-color: #d0d0d0;
+    --accent-color: #8b0000;
+    --button-bg: #2a2a2a;
+    --button-hover: #3a3a3a;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* --- 首页样式 --- */
+#home-screen {
+    max-width: 800px;
+    width: 100%;
+    text-align: center;
+    animation: fadeIn 2s ease-in-out;
+}
+.game-title { font-size: 2.5em; color: #fff; margin-bottom: 10px; letter-spacing: 5px; }
+.game-subtitle { font-size: 1.2em; color: var(--accent-color); margin-bottom: 40px; letter-spacing: 2px; }
+.intro-text {
+    text-align: left; background-color: #1a1a1a; padding: 30px;
+    border-radius: 8px; border-left: 4px solid var(--accent-color); margin-bottom: 40px; font-size: 1.05em;
+}
+.warning-text { color: #ff4d4d; font-weight: bold; margin-top: 20px; }
+.start-btn {
+    background-color: var(--accent-color); color: white; border: none;
+    padding: 15px 40px; font-size: 1.2em; border-radius: 4px; cursor: pointer; transition: all 0.3s ease;
+}
+.start-btn:hover { background-color: #a00000; box-shadow: 0 0 15px rgba(139, 0, 0, 0.6); }
+
+/* --- 状态栏与顶部按钮 (极其重要：初始 display: none) --- */
+#status-bar {
+    display: none; 
+    position: fixed;
+    top: 0; left: 0; width: 100%;
+    background-color: #111;
+    border-bottom: 2px solid #333;
+    padding: 15px 0;
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: bold;
+    z-index: 200;
+}
+.status-item { margin: 0 20px; }
+.status-life { color: #ff4d4d; }
+.status-pollution { color: #8a2be2; }
+
+#top-buttons {
+    display: none; 
+    position: fixed;
+    top: 60px; /* 放在状态栏下方一点 */
+    right: 20px;
+    z-index: 200;
+    flex-direction: column;
+    gap: 10px;
+}
+.side-btn {
+    background-color: #333; border: 1px solid var(--accent-color); color: #ff4d4d;
+    padding: 10px 15px; border-radius: 4px; cursor: pointer; font-weight: bold;
+}
+.side-btn:hover { background-color: var(--accent-color); color: white; }
+
+/* --- 游戏主界面 --- */
+#game-container {
+    display: none; 
+    max-width: 800px; width: 100%; background-color: #1e1e1e;
+    padding: 40px; border-radius: 8px; position: relative; margin-top: 60px; /* 避开顶部的状态栏 */
+}
+.story-text { font-size: 1.1em; margin-bottom: 30px; white-space: pre-wrap; }
+.choices-container { display: flex; flex-direction: column; gap: 15px; }
+.choice-btn {
+    background-color: var(--button-bg); color: var(--text-color); border: 1px solid #444;
+    padding: 15px 20px; font-size: 1em; text-align: left; cursor: pointer; border-radius: 4px;
+}
+.choice-btn:hover { background-color: var(--button-hover); border-color: #666; }
+
+/* --- 弹窗与遮罩层 --- */
+#overlay {
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85); z-index: 300;
+}
+.panel {
+    display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 80%; max-width: 700px; height: 80vh; background-color: #111;
+    border: 2px solid var(--accent-color); padding: 30px; overflow-y: auto; z-index: 301;
+}
+#inventory-panel { height: 60vh; max-width: 500px; } /* 背包比规则书稍微小一点 */
+.panel h3 { color: #ff4d4d; border-bottom: 1px solid #444; padding-bottom: 10px; }
+.close-btn { float: right; background: none; border: none; color: white; font-size: 1.8em; cursor: pointer; }
+.item-row { background-color: #2a2a2a; padding: 15px; margin-bottom: 10px; border-radius: 4px; border-left: 3px solid #777; }
+.item-name { font-weight: bold; color: #e0e0e0; margin-bottom: 5px; }
+.item-desc { font-size: 0.9em; color: #aaa; }
+.achievement { color: #ff4d4d; font-weight: bold; font-size: 1.2em; text-align: center; margin-top: 20px; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }

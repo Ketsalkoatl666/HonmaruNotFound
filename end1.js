@@ -158,16 +158,3 @@ function renderNode(nodeId) {
         choicesElement.appendChild(btn);
     });
 }
-
-// 规则面板开关逻辑
-function toggleRules() {
-    const panel = document.getElementById('rule-panel');
-    const overlay = document.getElementById('overlay');
-    if (panel.style.display === 'block') {
-        panel.style.display = 'none';
-        overlay.style.display = 'none';
-    } else {
-        panel.style.display = 'block';
-        overlay.style.display = 'block';
-    }
-}
